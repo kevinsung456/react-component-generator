@@ -8,7 +8,9 @@
     "server": "bun --watch run server/index.ts",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "bun test src/",
+    "server:test": "bun test server/"
   },
   "dependencies": {
     "react": "^19.2.4",
