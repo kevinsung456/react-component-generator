@@ -6,3 +6,10 @@ export interface GeneratedComponent {
   code: string;
   createdAt: Date;
 }
+
+export interface StreamingComponent {
+  id: string;
+  prompt: string;
+  streamingCode: string;
+  createdAt: Date;
+}
