@@ -1,0 +1,23 @@
+{
+  "skill_name": "agents-md",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "프로젝트의 AGENTS.md 거버넌스 시스템을 생성해줘. 루트, src, server 디렉토리 각각에 맞는 규칙을 만들고, CLAUDE.md에 @AGENTS.md 링크를 추가해줘.",
+      "expected_output": "루트 AGENTS.md (Operational Commands, Golden Rules, Project Context, Standards & References, Context Map 포함), src/AGENTS.md, server/AGENTS.md가 생성되고, 모든 CLAUDE.md에 @AGENTS.md 링크가 추가됨. 각 파일은 500라인 미만.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "기존 AGENTS.md를 master prompt 기준에 맞게 최적화해줄 수 있어?",
+      "expected_output": "기존 AGENTS.md를 검토한 후, no-fluff, no-emojis, 500라인 제한 등 기준에 맞게 재작성. 개선 사항 명시.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "새로운 마이크로서비스 프로젝트 구조가 있어. src/api, src/services, src/models, src/tests 폴더가 있는데, 각 영역에 맞는 AGENTS.md를 생성해줘. 기존 README.md가 있으면 중복을 피해줘.",
+      "expected_output": "루트 AGENTS.md와 각 폴더별 AGENTS.md (api/, services/, models/, tests/) 생성. README.md와의 중복 확인 후 제거. Context Map으로 각 영역 라우팅.",
+      "files": []
+    }
+  ]
+}

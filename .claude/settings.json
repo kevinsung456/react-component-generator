@@ -1,0 +1,8 @@
+{
+  "rules": [
+    {
+      "description": "TDD 규칙 (Red-Green-Refactor 사이클)",
+      "file": ".claude/rules/TDD.md"
+    }
+  ]
+}

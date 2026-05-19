@@ -1,0 +1,64 @@
+{
+  "skill_name": "pr-create",
+  "evals": [
+    {
+      "id": 1,
+      "name": "single-feature-commit",
+      "prompt": "PR 만들어줘",
+      "expected_output": "main 브랜치와 현재 브랜치의 diff를 분석하여 제목과 본문을 포함한 PR을 생성한다. 단일 feat 커밋이므로 PR 제목은 커밋 메시지를 그대로 사용한다.",
+      "files": [],
+      "assertions": [
+        {
+          "name": "pr-created",
+          "description": "gh pr create가 성공적으로 실행되어 PR URL이 반환되었다"
+        },
+        {
+          "name": "title-format",
+          "description": "PR 제목이 'feat: ' 형식으로 시작한다"
+        },
+        {
+          "name": "summary-section",
+          "description": "PR 본문에 '## Summary' 섹션이 있다"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "multiple-commits",
+      "prompt": "이제 PR을 생성해줘",
+      "expected_output": "여러 커밋(feat, fix)이 있을 때 각 타입별로 그룹핑하여 PR 본문을 작성한다. 제목은 주요 변경사항의 타입을 반영한다.",
+      "files": [],
+      "assertions": [
+        {
+          "name": "changes-grouped",
+          "description": "## Changes 섹션에서 커밋이 타입별로 그룹핑되어 있다"
+        },
+        {
+          "name": "test-plan-present",
+          "description": "## Test Plan 섹션이 있고 체크리스트를 포함한다"
+        },
+        {
+          "name": "notes-section",
+          "description": "## Notes 섹션이 있다"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "user-confirmation",
+      "prompt": "PR 생성 전에 미리보기를 보여줄 수 있어?",
+      "expected_output": "PR 생성 전에 제목과 본문 전체를 미리보기로 출력하고 사용자 승인을 받는다",
+      "files": [],
+      "assertions": [
+        {
+          "name": "preview-shown",
+          "description": "PR 미리보기(제목 + 본문)가 사용자에게 표시된다"
+        },
+        {
+          "name": "approval-requested",
+          "description": "사용자의 승인을 기다리는 프롬프트가 있다"
+        }
+      ]
+    }
+  ]
+}
