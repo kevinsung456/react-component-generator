@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { PromptInput } from './components/PromptInput';
 import { ComponentCard } from './components/ComponentCard';
 import { useComponentGenerator } from './hooks/useComponentGenerator';
+import { useLocalStorage } from './hooks/useLocalStorage';
 import type { Provider } from './types';
 import './App.css';
 
@@ -11,15 +12,27 @@ const PROVIDER_CONFIG = {
 } as const;
 
 function App() {
-  const [apiKey, setApiKey] = useState('');
+  // NOTE: API 키를 localStorage에 저장합니다.
+  // 장점: 새로고침 후 재입력 불필요 (UX 개선)
+  // 단점: XSS 공격 시 키 탈취 위험이 있습니다.
+  //       신뢰할 수 없는 환경에서는 입력 후 직접 삭제를 권장합니다.
+  const [apiKey, setApiKey] = useLocalStorage('rcg__api_key', '');
   const [showKey, setShowKey] = useState(false);
-  const [provider, setProvider] = useState<Provider>('google');
+  const [provider, setProvider] = useLocalStorage<Provider>('rcg__provider', 'google');
   const [envKeys, setEnvKeys] = useState<Record<Provider, boolean>>({
     anthropic: false,
     google: false,
   });
-  const { components, isLoading, error, generate, removeComponent, clearAll } =
-    useComponentGenerator();
+  const {
+    components,
+    isLoading,
+    error,
+    generate,
+    removeComponent,
+    clearAll,
+    promptHistory,
+    clearHistory,
+  } = useComponentGenerator();
 
   useEffect(() => {
     fetch('/api/config')
@@ -68,7 +81,12 @@ function App() {
 
       <main className="workspace">
         <section className="composer-panel" aria-label="컴포넌트 생성">
-          <PromptInput onGenerate={handleGenerate} isLoading={isLoading} />
+          <PromptInput
+            onGenerate={handleGenerate}
+            isLoading={isLoading}
+            promptHistory={promptHistory}
+            onClearHistory={clearHistory}
+          />
         </section>
 
         <aside className="settings-panel" aria-label="실행 설정">
