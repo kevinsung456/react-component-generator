@@ -731,9 +731,14 @@
   color: #ffffff;
 }
 
-.btn-copy:hover {
+.btn-copy:hover:not(:disabled) {
   background: #1e293b;
   border-color: #1e293b;
+}
+
+.btn-copy:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .code-block {
@@ -746,6 +751,86 @@
   font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
   font-size: 0.9rem;
   line-height: 1.65;
+  position: relative;
+}
+
+.typing-cursor {
+  animation: blink 0.8s step-end infinite;
+  color: #e2e8f0;
+  font-weight: bold;
+}
+
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.streaming-card {
+  border: 2px solid var(--primary-soft);
+  background: linear-gradient(135deg, var(--primary-soft) 0%, rgba(255, 255, 255, 0.5) 100%);
+}
+
+.card-meta {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-prompt {
+  display: flex;
+  gap: 8px;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+.prompt-label {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.badge-streaming {
+  background: linear-gradient(135deg, var(--primary), #1d4ed8);
+  color: #ffffff;
+}
+
+.badge-streaming::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse 1.2s ease-in-out infinite;
 }
 
 @media (max-width: 1080px) {

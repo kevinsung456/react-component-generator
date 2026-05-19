@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { PromptInput } from './components/PromptInput';
 import { ComponentCard } from './components/ComponentCard';
+import { StreamingCard } from './components/StreamingCard';
 import { useComponentGenerator } from './hooks/useComponentGenerator';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import type { Provider } from './types';
@@ -25,6 +26,7 @@ function App() {
   });
   const {
     components,
+    streamingComponent,
     isLoading,
     error,
     generate,
@@ -178,7 +180,14 @@ function App() {
           </div>
         )}
 
-        {isLoading && (
+        {streamingComponent && (
+          <StreamingCard
+            streamingCode={streamingComponent.streamingCode}
+            prompt={streamingComponent.prompt}
+          />
+        )}
+
+        {isLoading && !streamingComponent && (
           <div className="loading-card">
             <div className="loading-pulse" />
             <p>컴포넌트를 생성하고 있습니다...</p>
