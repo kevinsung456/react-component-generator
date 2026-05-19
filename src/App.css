@@ -592,9 +592,49 @@
   font-weight: 750;
 }
 
+.viewport-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.viewport-btn {
+  min-height: 32px;
+  min-width: 32px;
+  padding: 0 8px;
+  background: var(--surface-muted);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition:
+    background 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease;
+}
+
+.viewport-btn:hover {
+  background: var(--surface);
+  border-color: var(--line-strong);
+  color: var(--text);
+}
+
+.viewport-btn--active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+}
+
 .preview-content {
   padding: 18px;
   background: #ffffff;
+  display: flex;
+  justify-content: center;
+}
+
+.preview-render-container {
+  width: 100%;
 }
 
 .preview-render {
