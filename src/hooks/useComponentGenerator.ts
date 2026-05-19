@@ -1,5 +1,19 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useCallback } from 'react';
 import type { GeneratedComponent, Provider } from '../types';
+import { useLocalStorage } from './useLocalStorage';
+
+type SerializedComponent = Omit<GeneratedComponent, 'createdAt'> & {
+  createdAt: string;
+};
+
+function reviveComponents(value: unknown): GeneratedComponent[] {
+  if (!Array.isArray(value)) return [];
+  return (value as SerializedComponent[]).map((item) => ({
+    ...item,
+    createdAt: new Date(item.createdAt),
+  }));
+}
 
 interface UseComponentGeneratorReturn {
   components: GeneratedComponent[];
@@ -8,10 +22,20 @@ interface UseComponentGeneratorReturn {
   generate: (prompt: string, apiKey: string | undefined, provider: Provider) => Promise<void>;
   removeComponent: (id: string) => void;
   clearAll: () => void;
+  promptHistory: string[];
+  clearHistory: () => void;
 }
 
 export function useComponentGenerator(): UseComponentGeneratorReturn {
-  const [components, setComponents] = useState<GeneratedComponent[]>([]);
+  const [components, setComponents] = useLocalStorage<GeneratedComponent[]>(
+    'rcg__components',
+    [],
+    reviveComponents
+  );
+  const [promptHistory, setPromptHistory] = useLocalStorage<string[]>(
+    'rcg__prompt_history',
+    []
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -39,7 +63,15 @@ export function useComponentGenerator(): UseComponentGeneratorReturn {
         createdAt: new Date(),
       };
 
-      setComponents((prev) => [newComponent, ...prev]);
+      setComponents((prev) => {
+        const updated = [newComponent, ...prev];
+        return updated.slice(0, 20);
+      });
+
+      setPromptHistory((prev) => {
+        const deduplicated = prev.filter((p) => p !== prompt);
+        return [prompt, ...deduplicated].slice(0, 50);
+      });
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error';
       setError(message);
@@ -56,5 +88,18 @@ export function useComponentGenerator(): UseComponentGeneratorReturn {
     setComponents([]);
   }, []);
 
-  return { components, isLoading, error, generate, removeComponent, clearAll };
+  const clearHistory = useCallback(() => {
+    setPromptHistory([]);
+  }, []);
+
+  return {
+    components,
+    isLoading,
+    error,
+    generate,
+    removeComponent,
+    clearAll,
+    promptHistory,
+    clearHistory,
+  };
 }

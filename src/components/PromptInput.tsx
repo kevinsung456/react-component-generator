@@ -3,6 +3,8 @@ import { useState } from 'react';
 interface PromptInputProps {
   onGenerate: (prompt: string) => void;
   isLoading: boolean;
+  promptHistory: string[];
+  onClearHistory: () => void;
 }
 
 const EXAMPLES = [
@@ -14,7 +16,12 @@ const EXAMPLES = [
   '테이블 행 상세보기 패널. 선택한 고객의 기본 정보와 최근 활동 표시',
 ];
 
-export function PromptInput({ onGenerate, isLoading }: PromptInputProps) {
+export function PromptInput({
+  onGenerate,
+  isLoading,
+  promptHistory,
+  onClearHistory,
+}: PromptInputProps) {
   const [prompt, setPrompt] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -59,6 +66,30 @@ export function PromptInput({ onGenerate, isLoading }: PromptInputProps) {
           )}
         </button>
       </form>
+      {promptHistory.length > 0 && (
+        <div className="prompt-history">
+          <div className="history-header">
+            <span className="examples-label">최근 프롬프트</span>
+            <button
+              className="btn-clear-history"
+              onClick={onClearHistory}
+              type="button"
+            >
+              전체 삭제
+            </button>
+          </div>
+          {promptHistory.map((item) => (
+            <button
+              key={item}
+              className="history-chip"
+              onClick={() => setPrompt(item)}
+              type="button"
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+      )}
       <div className="prompt-examples">
         <span className="examples-label">예시 프롬프트</span>
         {EXAMPLES.map((example) => (
